@@ -1,13 +1,14 @@
 // This is the canonical layout file for the Quantum project. If you want to add another keyboard,
 // this is the style you want to emulate.
-
+#include "keycode.h"
+#include "quantum_keycodes.h"
 #include "planck.h"
 #include "action_layer.h"
 #ifdef AUDIO_ENABLE
 #include "audio.h"
 #endif
 #include "eeconfig.h"
-
+#include "backlight.h"                                                          
 // Avoid modifier to be stuck when layers changes
 // take up some memory so might be needded to remove it
 #define PREVENT_STUCK_MODIFIERS
@@ -118,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     {KC_TAB ,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_BSPC  },
     {MO(L_0),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  MO(L_0)  },
     {KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT  },
-    {KC_LCTL,  KC_LALT, MO(L_1), MO(L_2), KC_ESC,  KC_SPC,  KC_SPC,  KC_ENT,  MO(L_3), MO(L_4), KC_LGUI,  KL_BL    }
+    {KC_LCTL,  KC_LALT, MO(L_1), MO(L_2), KC_ESC,  KC_SPC,  KC_SPC,  KC_ENT,  MO(L_3), MO(L_4), KC_LGUI,  MO(L_Ms) }
 
   },
   /* Number and math symbol
@@ -142,9 +143,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   },
   /* Symbol
    * ,-----------------------------------------------------------------------------------.
-   * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
+   * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   _  |   =  | Bksp |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |      |   <  |   >  |   :  |   ?  |      |      |      |      |   _  |   +  |      |
+   * |      |   <  |   >  |   :  |   ?  |      |      |      |      |   -  |   +  |      |
    * |------+------+------+------+------+------|------+------+------+------+------+------|
    * |      |  <>  |  <>  |   :: |      |      |      |      |   ,  |   .  |  /   |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -153,7 +154,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
 
   [L_1] = {
-    {KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,  KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC},
+    {KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,  KC_ASTR, S(KC_MINS), KC_EQL, KC_BSPC},
     {XXXXXXX, KC_LABK, KC_RABK, KC_COLN, KC_QUES, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, KC_MINS, KC_PLUS, XXXXXXX},
     {XXXXXXX, MCC_TYP, MCC_TYP, MCC_NSP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_COMM, KC_DOT,  KC_SLSH, XXXXXXX},
     {KC_LCTL,  KC_LALT, MO(L_1), XXXXXXX, KC_ESC, KC_SPC,  KC_SPC,  KC_ENT,   XXXXXXX, XXXXXXX, KC_LGUI, XXXXXXX}
@@ -183,17 +184,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+-------------+------+------+------+------+------|
    * |      |  LF  |  DW  |  RT  |      |  INS |  Hm  |  FS  | LED  | LED- | LED+ |      |
    * |------+------+------+------+------+------|------+------+------+------+------+------|
-   * |      | DSKL |      | DSKR |      |  DEL |  END |      |  PRV |  PLY | NXT  | Mouse|
+   * |      | DSKL |      | DSKR |      |  DEL |  END |      |  PRV |  PLY | NXT  |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
-   * | Ctrl | Alt  |      |      |Esc   |    Space    |ENT   |  KL3 |      |  OS  |      |
+   * | Ctrl | Alt  |      |      |Esc   |    Space    |ENT   |  KL3 |      |  OS  | Mouse|
    * `-----------------------------------------------------------------------------------'
    */
 
   [L_3] = {
     { KC_TAB, KC_PGUP, KC_UP,   KC_PGDN, XXXXXXX, KC_PSCR , KC_SLCK, KC_PAUS,  KC_MUTE, KC_VOLD,  KC_VOLU, XXXXXXX},
     {XXXXXXX, KC_LEFT, KC_DOWN, KC_RIGHT,XXXXXXX, KC_INS,   KC_HOME, MCO_FSC,  BL_TOGG, BL_DEC,   BL_INC,  XXXXXXX},
-    {XXXXXXX, MCO_DSL, XXXXXXX, MCO_DSR, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX,  KC_MPRV, KC_MPLY,  KC_MNXT, TG(L_Ms)},
-    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, KC_ESC,  KC_SPC,   KC_SPC,  KC_ENT,   MO(L_3), XXXXXXX,  KC_LGUI, XXXXXXX}
+    {XXXXXXX, MCO_DSL, XXXXXXX, MCO_DSR, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX,  KC_MPRV, KC_MPLY,  KC_MNXT, XXXXXXX},
+    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, KC_ESC,  KC_SPC,   KC_SPC,  KC_ENT,   MO(L_3), XXXXXXX,  KC_LGUI, TG(L_Ms)}
   },
   /* TMUX/VIM/C++ Macro
    * ,-----------------------------------------------------------------------------------.
@@ -211,7 +212,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     {MCT_NW, MCT_ZM,  MCT_U,   MCT_SH, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MCV_H,   MCV_IND, MCV_L,   MCT_CFG},
     {MCT_L1, MCT_L,   MCT_D,   MCT_R,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MCV_B,   MCV_CP,  MCV_E,   MCV_CFG},
     {MCT_L2, MCT_K,   XXXXXXX, MCT_SV, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX}, 
-    {XXXXXXX,MCT_0,   MCT_1,   MCT_3,  MCT_4,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(L_4), XXXXXXX, MCT_TT}
+    {XXXXXXX,MCT_0,   MCT_1,   MCT_2,  MCT_3,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(L_4), XXXXXXX, MCT_TT}
   },
 
   /* Mouse navigation
@@ -230,11 +231,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     { KC_TAB, KC_BTN1, KC_MS_U, KC_BTN2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ACL0, KC_ACL1, KC_ACL2, XXXXXXX},
     {XXXXXXX, KC_MS_L, KC_MS_D, KC_MS_R, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX},
     {KC_LSFT, XXXXXXX, KC_BTN3, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_R, KC_RSFT}, 
-    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, TG(L_Q), TG(L_Q), TG(L_Q), TG(L_Q), MO(L_3), XXXXXXX, KC_LGUI, XXXXXXX}
+    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, TG(L_Q), TG(L_Q), TG(L_Q), TG(L_Q), XXXXXXX, XXXXXXX, KC_LGUI, MO(L_Ms)}
   }
-
-
-
 };
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef AUDIO_ENABLE
@@ -258,44 +256,69 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Macros //
     // Parenthesis
     case MC_PAR:
-      send_string("()");
-      send_word(KC_LEFT);
+      if(record->event.pressed){
+        SEND_STRING("()");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
       return false;
       break;
 
     case MC_CUR:
-      send_string("{}");
-      send_word(KC_LEFT);
+      if(record->event.pressed){
+        SEND_STRING("{}");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
+
       return false;
       break;
 
     case MC_SQR:
-      send_string("[]");
-      send_word(KC_LEFT);
+      if(record->event.pressed){
+        SEND_STRING("[]");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
+
       return false;
       break;
 
       // C++
     case MCC_TYP:
-      send_string("<>");
-      send_word(KC_LEFT);
+      if(record->event.pressed){
+        SEND_STRING("<>");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
+
       return false;
       break;
 
     case MCC_FOR:
-      send_string("for(unsigned int i = 0 ; i < size ; i++){}");
-      send_word(KC_LEFT);
+      if(record->event.pressed){
+        SEND_STRING("for(unsigned int i = 0 ; i < size ; i++){}");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
+
       return false;
       break;
 
     case MCC_LIN:
-      send_string("////////////////////////////////////////////////////////////////////////////////");
-      send_word(KC_ENT);
+      if(record->event.pressed){
+        SEND_STRING("////////////////////////////////////////////////////////////////////////////////");
+        register_code(KC_ENT);
+      }
+      unregister_code(KC_LEFT);
+
       return false;
       break;
 
     case MCC_NSP:
-      send_string("::");
+      if(record->event.pressed){
+        SEND_STRING("::");
+      }
       return false;
       break;
   }
@@ -311,7 +334,7 @@ void matrix_init_user(void) {
 #ifdef AUDIO_ENABLE
 void startup_user(){
   _delay_ms(20); // gets rid of tick
-  PLAY_NOTE_ARRAY(tone_startup, false, 0);
+//  PLAY_NOTE_ARRAY(tone_startup, false, 0);
   // By default the keyboard is setup for Linux shortcut
   current_os = OS_LINUX;
   tmux_in_tmux = false;
