@@ -196,11 +196,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     {XXXXXXX, MCO_DSL, XXXXXXX, MCO_DSR, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX,  KC_MPRV, KC_MPLY,  KC_MNXT, XXXXXXX},
     {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, KC_ESC,  KC_SPC,   KC_SPC,  KC_ENT,   MO(L_3), XXXXXXX,  KC_LGUI, TG(L_Ms)}
   },
+  
   /* TMUX/VIM/C++ Macro
    * ,-----------------------------------------------------------------------------------.
    * |MCT_NW|MCT_ZM|MCT_U |MCT_SH|      |      |      |MCV_H |MCV_ID|MCV_F |MCV_L | TCFG |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * |MCT_L1|MCT_L |MCT_D |MCT_R |      |      |      |MCV_B |MCV_CP|MCV_E |      | VCFG |
+   * |MCT_L1|MCT_L |MCT_D |MCT_R | CFOR | CLIN |      |MCV_B |MCV_CP|MCV_E |      | VCFG |
    * |------+------+------+------+------+------|------+------+------+------+------+------|
    * |MCT_L2|MCT_K |      |MCT_SV|      |      |      |      |      |      |      |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -210,7 +211,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [L_4] = { 
     {MCT_NW, MCT_ZM,  MCT_U,   MCT_SH, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MCV_H,   MCV_IND, MCV_L,   MCT_CFG},
-    {MCT_L1, MCT_L,   MCT_D,   MCT_R,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MCV_B,   MCV_CP,  MCV_E,   MCV_CFG},
+    {MCT_L1, MCT_L,   MCT_D,   MCT_R,  MCC_FOR, MCC_LIN, XXXXXXX, XXXXXXX, MCV_B,   MCV_CP,  MCV_E,   MCV_CFG},
     {MCT_L2, MCT_K,   XXXXXXX, MCT_SV, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX}, 
     {XXXXXXX,MCT_0,   MCT_1,   MCT_2,  MCT_3,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(L_4), XXXXXXX, MCT_TT}
   },
@@ -219,7 +220,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------------------------------------------------.
    * | tab  | LCL  |  UP  | RCL  |      |      |      |      | SPD0 | SPD1 | SPD2 |      |
    * |------+------+------+------+------+-------------+------+------+------+------+------|
-   * | HOLD |  LF  |  DW  |  RT  |      |      |      |      |      | SCRU |      |      |
+   * |      |  LF  |  DW  |  RT  |      |      |      |      |      | SCRU |      |      |
    * |------+------+------+------+------+------|------+------+------+------+------+------|
    * | shift|      |  MCL |      |      |      |      |      | SCRL |  SCRD| SCRR | shift|
    * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -270,7 +271,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_code(KC_LEFT);
       }
       unregister_code(KC_LEFT);
-
       return false;
       break;
 
@@ -280,7 +280,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_code(KC_LEFT);
       }
       unregister_code(KC_LEFT);
+      return false;
+      break;
 
+    
+    case MC_QT1:
+      if(record->event.pressed){
+        SEND_STRING("\"\"");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
+      return false;
+      break;
+
+    case MC_QT2:
+      if(record->event.pressed){
+       SEND_STRING("''");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
+      return false;
+      break;
+
+    case MC_QT3:
+      if(record->event.pressed){
+        SEND_STRING("`'");
+        register_code(KC_LEFT);
+      }
+      unregister_code(KC_LEFT);
       return false;
       break;
 
@@ -291,13 +318,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_code(KC_LEFT);
       }
       unregister_code(KC_LEFT);
-
       return false;
       break;
 
     case MCC_FOR:
       if(record->event.pressed){
-        SEND_STRING("for(unsigned int i = 0 ; i < size ; i++){}");
+       SEND_STRING("for(unsigned int i = 0 ; i < size ; i++){}");
         register_code(KC_LEFT);
       }
       unregister_code(KC_LEFT);
@@ -308,9 +334,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case MCC_LIN:
       if(record->event.pressed){
         SEND_STRING("////////////////////////////////////////////////////////////////////////////////");
-        register_code(KC_ENT);
       }
-      unregister_code(KC_LEFT);
 
       return false;
       break;
@@ -321,6 +345,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+   
+    // TMUX
+    
   }
   return true;
 }

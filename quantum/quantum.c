@@ -540,6 +540,7 @@ void send_string(const char *str) {
             register_code(keycode);
             unregister_code(keycode);
             unregister_code(KC_LSFT);
+            send_keyboard_report();
         }
         else {
             register_code(keycode);
