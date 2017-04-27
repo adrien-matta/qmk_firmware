@@ -81,7 +81,6 @@ enum planck_keycodes {
   MCV_H,   // vim move from cxx to header
   MCV_IND, // vim indent the file and come back
   MCV_F,   // vim for loop
-  MCV_L,   // vim separator line of /
   MCV_B,   // vim begin of line
   MCV_CP,  // vim auto comp
   MCV_E,   // vim end of line
@@ -194,7 +193,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     { KC_TAB, KC_PGUP, KC_UP,   KC_PGDN, XXXXXXX, KC_PSCR , KC_SLCK, KC_PAUS,  KC_MUTE, KC_VOLD,  KC_VOLU, XXXXXXX},
     {XXXXXXX, KC_LEFT, KC_DOWN, KC_RIGHT,XXXXXXX, KC_INS,   KC_HOME, MCO_FSC,  BL_TOGG, BL_DEC,   BL_INC,  XXXXXXX},
     {XXXXXXX, MCO_DSL, XXXXXXX, MCO_DSR, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX,  KC_MPRV, KC_MPLY,  KC_MNXT, XXXXXXX},
-    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, KC_ESC,  KC_SPC,   KC_SPC,  KC_ENT,   MO(L_3), XXXXXXX,  KC_LGUI, TG(L_Ms)}
+    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, KC_ESC,  KC_SPC,   KC_SPC,  KC_ENT,   MO(L_3), XXXXXXX,  KC_LGUI, XXXXXXX}
   },
   
   /* TMUX/VIM/C++ Macro
@@ -210,10 +209,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
 
   [L_4] = { 
-    {MCT_NW, MCT_ZM,  MCT_U,   MCT_SH, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MCV_H,   MCV_IND, MCV_L,   MCT_CFG},
+    {MCT_NW, MCT_ZM,  MCT_U,   MCT_SH, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MCV_H,   MCV_IND, XXXXXXX,   MCT_CFG},
     {MCT_L1, MCT_L,   MCT_D,   MCT_R,  MCC_FOR, MCC_LIN, XXXXXXX, XXXXXXX, MCV_B,   MCV_CP,  MCV_E,   MCV_CFG},
-    {MCT_L2, MCT_K,   XXXXXXX, MCT_SV, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX}, 
-    {XXXXXXX,MCT_0,   MCT_1,   MCT_2,  MCT_3,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(L_4), XXXXXXX, MCT_TT}
+    {MCT_L2, MCT_K,   MCT_0,   MCT_SV, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX}, 
+    {XXXXXXX,MCT_0,   MCT_1,   MCT_2,  MCT_3,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(L_4), MO(L_F), MCT_TT}
   },
 
   /* Mouse navigation
@@ -232,8 +231,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     { KC_TAB, KC_BTN1, KC_MS_U, KC_BTN2, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_ACL0, KC_ACL1, KC_ACL2, XXXXXXX},
     {XXXXXXX, KC_MS_L, KC_MS_D, KC_MS_R, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_U, XXXXXXX, XXXXXXX},
     {KC_LSFT, XXXXXXX, KC_BTN3, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_WH_L, KC_WH_D, KC_WH_R, KC_RSFT}, 
-    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, TG(L_Q), TG(L_Q), TG(L_Q), TG(L_Q), XXXXXXX, XXXXXXX, KC_LGUI, MO(L_Ms)}
+    {KC_LCTL, KC_LALT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LGUI, MO(L_Ms)}
+  },
+  
+  /* Func layer
+   * ,-----------------------------------------------------------------------------------.
+   * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+   * |------+------+------+------+------+-------------+------+------+------+------+------|
+   * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+   * |------+------+------+------+------+------|------+------+------+------+------+------|
+   * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+   * |------+------+------+------+------+------+------+------+------+------+------+------|
+   * | Ctrl | Alt  |      |      |Esc   |    Space    |ENT   |      |      |  OS  |      |
+   * `-----------------------------------------------------------------------------------'
+   */
+
+  [L_F] = {
+    {KC_F1 ,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12    },
+    {KC_F1 ,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12    },
+    {KC_F1 ,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12    },
+    {XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, KC_ESC,   KC_SPC,  KC_SPC,  KC_ENT,  XXXXXXX, XXXXXXX, MO(L_F), XXXXXXX   }
   }
+
 };
 ////////////////////////////////////////////////////////////////////////////////
 #ifdef AUDIO_ENABLE
@@ -347,7 +366,149 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
    
     // TMUX
-    
+     case MCT_NW:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        SEND_STRING(":neww");
+        register_code(KC_ENT);
+      }
+      unregister_code(KC_ENT);
+      return false;
+      break;
+   
+     case MCT_SH:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        SEND_STRING("%");
+      }
+      return false;
+      break;
+   
+     case MCT_SV:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        SEND_STRING("\"");
+      }
+      return false;
+      break;
+   
+     case MCT_U:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_UP);
+        unregister_code(KC_UP);
+      }
+      return false;
+      break;
+   
+     case MCT_D:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_DOWN);
+        unregister_code(KC_DOWN);
+      }
+      return false;
+      break;
+   
+     case MCT_L:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_LEFT);
+        unregister_code(KC_LEFT);
+      }
+      return false;
+      break;
+   
+     case MCT_R:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_RIGHT);
+        unregister_code(KC_RIGHT);
+      }
+      return false;
+      break;
+   
+     case MCT_ZM:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_Z);
+        unregister_code(KC_Z);
+      }
+      return false;
+      break;
+   
+     case MCT_0:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_0);
+        unregister_code(KC_0);
+      }
+      return false;
+      break;
+   
+     case MCT_1:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_1);
+        unregister_code(KC_1);
+      }
+      return false;
+      break;
+   
+     case MCT_2:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_2);
+        unregister_code(KC_2);
+      }
+      return false;
+      break;
+   
+     case MCT_3:
+      if(record->event.pressed){
+        register_code(KC_LCTL);
+        register_code(KC_Q);
+        unregister_code(KC_Q);
+        unregister_code(KC_LCTL);
+        register_code(KC_3);
+        unregister_code(KC_3);
+      }
+      return false;
+      break;
+
   }
   return true;
 }
